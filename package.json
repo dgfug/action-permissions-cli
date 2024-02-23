@@ -1,6 +1,6 @@
 {
   "name": "@stoe/action-permissions-cli",
-  "version": "1.0.1",
+  "version": "2.0.3",
   "type": "module",
   "description": "CLI to grab GitHub Action `permissions`",
   "keywords": [
@@ -15,14 +15,17 @@
   "license": "MIT",
   "repository": "github:stoe/action-permissions-cli",
   "engines": {
-    "node": ">=14",
-    "npm": ">=7"
+    "node": ">=16",
+    "npm": ">=8"
   },
   "bin": {
-    "action-permissions-cli": "./index.mjs"
+    "action-permissions-cli": "./index.js"
   },
-  "directories": {
-    "lib": "utils"
+  "exports": {
+    ".": "./utils/action-permissions.js",
+    "./utils": "./utils/action-permissions.js",
+    "./utils/*": "./utils/*.js",
+    "./package.json": "./package.json"
   },
   "files": [
     "utils/",
@@ -30,26 +33,34 @@
     "license",
     "readme.md"
   ],
-  "exports": "./utils/ActionPermissions.mjs",
   "scripts": {
+    "format": "npx prettier --config-precedence prefer-file --write . && eslint . --fix",
+    "prepare": "husky install ./.github/husky",
     "pretest": "npx eslint-config-prettier .eslintrc.json",
     "test": "eslint ."
   },
   "dependencies": {
     "@octokit/core": "^3.5.1",
-    "@octokit/plugin-paginate-rest": "^2.16.0",
-    "@octokit/plugin-throttling": "^3.5.1",
-    "chalk": "^4.1.2",
-    "csv-stringify": "^5.6.4",
+    "@octokit/plugin-paginate-rest": "^2.17.0",
+    "@octokit/plugin-throttling": "^3.5.2",
+    "chalk": "^5.0.0",
+    "csv": "^6.0.5",
     "js-yaml": "^4.1.0",
-    "meow": "^10.1.1"
+    "meow": "^10.1.2"
   },
   "devDependencies": {
     "@github/prettier-config": "^0.0.4",
-    "@octokit/openapi-types": "^10.0.0",
-    "eslint": "^7.32.0",
+    "@octokit/openapi-types": "^11.2.0",
+    "eslint": "^8.9.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-github": "^4.2.0"
+    "eslint-plugin-github": "^4.3.5",
+    "husky": "^7.0.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "./.github/husky/pre-commit",
+      "pre-push": "./.github/husky/pre-push"
+    }
   },
   "prettier": "@github/prettier-config"
 }
